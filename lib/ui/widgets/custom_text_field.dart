@@ -22,19 +22,26 @@ class CustomTextField extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric( horizontal: 10.w,vertical: 10),
-      child: TextField(
-        style: Theme.of(context).textTheme.bodyText1,
-        controller: textEditingController,
-        decoration: InputDecoration(
-          hintText: hintText,
-          border: inputBorder,
-          focusedBorder: inputBorder,
-          enabledBorder: inputBorder,
-          filled: true,
-          contentPadding: const EdgeInsets.all(8),
+      child: Container(
+           decoration: BoxDecoration( color: Theme.of(context).colorScheme.secondaryVariant,borderRadius: BorderRadius.circular(2)),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4),
+          child: TextField(
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 10.sp,color: Theme.of(context).colorScheme.secondaryVariant),
+            controller: textEditingController,
+            decoration: InputDecoration(
+              hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 10.sp),
+              hintText: hintText,
+              border: inputBorder,
+              focusedBorder: inputBorder,
+              enabledBorder: inputBorder,
+              filled: true,
+              contentPadding: const EdgeInsets.all(8),
+            ),
+            keyboardType: textInputType,
+            obscureText: isPass,
+          ),
         ),
-        keyboardType: textInputType,
-        obscureText: isPass,
       ),
     );
   }

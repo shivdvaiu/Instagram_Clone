@@ -2,9 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/business_logic/utils/assets/assets.dart';
-import 'package:instagram_clone/business_logic/utils/routes/routes.dart';
 import 'package:instagram_clone/business_logic/utils/strings/strings.dart';
 import 'package:instagram_clone/business_logic/view_models/auth/login_view_model.dart/login_view_model.dart';
+import 'package:instagram_clone/business_logic/view_models/auth/sign_up_view_model/sign_up_view_model.dart';
 import 'package:instagram_clone/business_logic/view_models/theme_view_model/theme_view_model.dart';
 import 'package:instagram_clone/ui/app_theme/app_theme.dart';
 import 'package:instagram_clone/ui/widgets/custom_text_field.dart';
@@ -12,28 +12,12 @@ import 'package:instagram_clone/ui/widgets/elevated_button.dart';
 import 'package:provider/src/provider.dart';
 import 'package:sizer/sizer.dart';
 
-class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
-
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _isLoading = false;
-
-  @override
-  void dispose() {
-    super.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-  }
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final loginProvider = context.read<LoginViewModel>();
+    final signUpProvider = context.read<SignUpViewModel>();
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -44,19 +28,38 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                height: 20.h,
+                height: 8.h,
               ),
               SvgPicture.asset(
                 Assets.instaLogo,
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
+               SizedBox(
+                height: 1.h,
+              ),
+              Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondaryVariant,
+                      shape: BoxShape.circle),
+                  height: 80,
+                  width: 80,
+                  child:Icon(Icons.verified_user)),
               SizedBox(
-                height: 4.h,
+                height: 2.h,
+              ),
+              CustomTextField(
+                hintText: Strings.userName,
+                textInputType: TextInputType.name,
+                textEditingController: signUpProvider.userNameController,
+              ),
+              SizedBox(
+                height: 2.h,
               ),
               CustomTextField(
                 hintText: Strings.emailHint,
-                textInputType: TextInputType.emailAddress,
-                textEditingController: loginProvider.loginTextEditingController,
+                textInputType: TextInputType.text,
+                textEditingController: signUpProvider.emailController,
+                isPass: true,
               ),
               SizedBox(
                 height: 2.h,
@@ -64,21 +67,38 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomTextField(
                 hintText: Strings.passwordHint,
                 textInputType: TextInputType.text,
-                textEditingController:
-                    loginProvider.loginPasswordEditingController,
+                textEditingController: signUpProvider.passwordController,
                 isPass: true,
               ),
               SizedBox(
-                height: 3.h,
+                height: 2.h,
+              ),
+              CustomTextField(
+                hintText: Strings.confirmHint,
+                textInputType: TextInputType.text,
+                textEditingController: signUpProvider.passwordConfirmController,
+                isPass: true,
+              ),
+              SizedBox(
+                height: 2.h,
+              ),
+              CustomTextField(
+                hintText: Strings.userBio,
+                textInputType: TextInputType.text,
+                textEditingController: signUpProvider.bioController,
+                isPass: true,
+              ),
+              SizedBox(
+                height: 2.h,
               ),
               MyElevatedButton(
                   onPressed: () {
                     context.read<ThemeViewModel>().changeTheme();
                   },
-                  buttonName: Strings.loginText,
+                  buttonName: Strings.signupText,
                   padding: EdgeInsets.symmetric(
                     horizontal: 36.w,
-                    vertical: 1.h,
+                    vertical: 1.5.h,
                   )),
               SizedBox(
                 height: 3.h,
@@ -86,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
               RichText(
                   text: TextSpan(children: [
                 TextSpan(
-                    text: Strings.dontHaveAccount,
+                    text: Strings.alreadyHaveAccount,
                     style: Theme.of(context)
                         .textTheme
                         .bodyText1!
@@ -95,9 +115,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        Navigator.pushNamed(context, Routes.signupScreen);
+                        Navigator.pop(context);
                       },
-                    text: Strings.signupText,
+                    text: Strings.loginText,
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontSize: 12.sp,
                         color: Theme.of(context).colorScheme.secondary))

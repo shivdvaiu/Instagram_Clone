@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class MyElevatedButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -13,14 +14,14 @@ class MyElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          primary: Theme.of(context).colorScheme.secondaryVariant,
+          primary: Theme.of(context).colorScheme.secondary,
           padding: padding),
       onPressed: onPressed,
       child: Text(buttonName,
           style: Theme.of(context)
               .textTheme
               .bodyText1!
-              .copyWith(color: Colors.white)),
+              .copyWith(color: Colors.white,fontSize:10.sp,fontWeight:FontWeight.bold,)),
     );
   }
 }
