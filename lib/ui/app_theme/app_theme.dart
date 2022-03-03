@@ -24,11 +24,12 @@ class AppTheme {
 
       ///text theme
       textTheme: GoogleFonts.openSansTextTheme().copyWith(
-        bodyText1: TextStyle(fontSize: 13.sp,color: Colors.grey,fontWeight:FontWeight.w400),
+        bodyText1: TextStyle(
+            fontSize: 13.sp, color: Colors.grey, fontWeight: FontWeight.w400),
+        bodyText2: TextStyle(fontSize: 13.sp, color: Colors.black,fontWeight: FontWeight.w400),
         headline6: TextStyle(fontSize: 18.0),
         button: TextStyle(fontSize: 16.0, letterSpacing: 1),
         subtitle2: TextStyle(),
-        bodyText2: TextStyle(),
         headline3: TextStyle(fontWeight: FontWeight.w800, color: Colors.black),
       ));
 
@@ -51,8 +52,11 @@ class AppTheme {
 
       ///text theme
       textTheme: GoogleFonts.openSansTextTheme().copyWith(
-        bodyText1: TextStyle(fontSize: 13.sp,color:Colors.grey.withOpacity(0.7),fontWeight:FontWeight.w400),
-        bodyText2: TextStyle(fontSize: 13.sp,color:Colors.white),
+        bodyText1: TextStyle(
+            fontSize: 13.sp,
+            color: Colors.grey.withOpacity(0.7),
+            fontWeight: FontWeight.w400),
+        bodyText2: TextStyle(fontSize: 13.sp, color: Colors.white,fontWeight: FontWeight.w400),
         headline6: TextStyle(fontSize: 18.0),
         button: TextStyle(fontSize: 16.0, letterSpacing: 1),
         subtitle2: TextStyle(),

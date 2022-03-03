@@ -12,16 +12,17 @@ import 'package:sizer/sizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupServiceLocator();
+  await setupServiceLocator();
   await Firebase.initializeApp();
 
+
+  
   runApp(Sizer(
     builder: (context, orientation, deviceType) {
       return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => LoginViewModel()),
-            ChangeNotifierProvider(create: (_) => SignUpViewModel()),
-
+          ChangeNotifierProvider(create: (_) => SignUpViewModel()),
           ChangeNotifierProvider(
             create: (_) => ThemeViewModel(AppTheme.lightTheme),
           )
