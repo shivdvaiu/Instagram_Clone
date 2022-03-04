@@ -29,11 +29,9 @@ class CustomTextField extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondaryVariant,
             borderRadius: BorderRadius.circular(2)),
         child: TextField(
-          onChanged: (value){
-
-log(textEditingController.text);
-          },
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 10.sp),
+          onChanged: (value) {},
+          style:
+              Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 10.sp),
           controller: textEditingController,
           decoration: InputDecoration(
             hintStyle: Theme.of(context)
@@ -45,7 +43,6 @@ log(textEditingController.text);
             focusedBorder: inputBorder,
             enabledBorder: inputBorder,
             filled: true,
-            contentPadding: const EdgeInsets.all(8),
           ),
           keyboardType: textInputType,
           obscureText: isObsecure,

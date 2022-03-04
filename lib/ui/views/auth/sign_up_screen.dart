@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/business_logic/utils/assets/assets.dart';
 import 'package:instagram_clone/business_logic/utils/enums/enums.dart';
-import 'package:instagram_clone/business_logic/utils/services/dialogs/circular_dialog.dart';
+import 'package:instagram_clone/business_logic/utils/service_locator/service_locator.dart';
+import 'package:instagram_clone/business_logic/utils/services/dialogs/circular_progress_bar.dart';
 import 'package:instagram_clone/business_logic/utils/services/material_banner/material_banner.dart';
 import 'package:instagram_clone/business_logic/utils/services/snack_bar/snack_bar.dart';
 import 'package:instagram_clone/business_logic/utils/strings/strings.dart';
@@ -12,47 +13,17 @@ import 'package:instagram_clone/business_logic/view_models/auth/login_view_model
 import 'package:instagram_clone/business_logic/view_models/auth/sign_up_view_model/sign_up_view_model.dart';
 import 'package:instagram_clone/business_logic/view_models/theme_view_model/theme_view_model.dart';
 import 'package:instagram_clone/ui/app_theme/app_theme.dart';
-import 'package:instagram_clone/ui/views/base_view/base_view.dart';
 import 'package:instagram_clone/ui/widgets/custom_text_field.dart';
 import 'package:instagram_clone/ui/widgets/elevated_button.dart';
+import 'package:provider/provider.dart';
 import 'package:provider/src/provider.dart';
 import 'package:sizer/sizer.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
-
-  @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
-  late final SignUpViewModel signUpProvider;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    signUpProvider = context.read<SignUpViewModel>();
-
-   log( signUpProvider.userNameController.text);
-  
-  }
-
-
-@override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-
-   log( signUpProvider.userNameController.text);
-  }
-
-
-
-
+class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BaseView<SignUpViewModel>(
-      builder: (BuildContext, signUpProvider, _) {
+    return Consumer<SignUpViewModel>(
+      builder: (BuildContext context, signUpProvider, Widget? child) {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           body: SafeArea(
@@ -75,7 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ? CircleAvatar(
                           radius: 64,
                           backgroundImage: MemoryImage(signUpProvider.image!),
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.grey,
                         )
                       : Stack(
                           children: [
@@ -149,18 +120,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   MyElevatedButton(
                       onPressed: () {
-                        if (signUpProvider.image == null) {
-                          showSnackBar(context, "Please Select Image");
-                          return;
-                        }
-
-                        showCustomDialog(context: context);
-
-                        if (signUpProvider.passwordController.text !=
-                            signUpProvider.passwordConfirmController.text) {
-                          return;
-                        }
-
+                        showCircularProgressBar(context: context);
                         createUser(
                             context: context, signUpProvider: signUpProvider);
                       },
@@ -184,6 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     TextSpan(
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
+                            signUpProvider.resetUserSignUpInfo();
                             Navigator.pop(context);
                           },
                         text: Strings.loginText,
@@ -224,7 +185,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
           break;
 
         case SignUpState.SIGN_UP_SUCCESS:
+          signUpProvider.resetUserSignUpInfo();
           showSnackBar(context, Strings.signUpSucceed);
+          Navigator.pop(context);
+          break;
+        case SignUpState.PASSWORD_NOT_SAME:
+          showSnackBar(context, Strings.passwordNotMatch);
+          break;
+
+        case SignUpState.VALIDATED_FALSE:
+          showSnackBar(context, Strings.fillRequiredInformation);
+          break;
+        case SignUpState.VALIDATED_TRUE:
+          break;
+        case SignUpState.SELECT_IMAGE:
+          showSnackBar(context, Strings.pleaseUploadImage);
+          break;
       }
     });
   }

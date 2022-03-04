@@ -10,7 +10,9 @@ import 'package:instagram_clone/business_logic/utils/constants/constants.dart';
 import 'package:instagram_clone/business_logic/utils/enums/enums.dart';
 import 'package:instagram_clone/business_logic/utils/service_locator/service_locator.dart';
 import 'package:instagram_clone/business_logic/utils/services/database/database_keys/data_base_keys.dart';
+import 'package:instagram_clone/business_logic/utils/services/firebase/firebase_methods.dart';
 import 'package:instagram_clone/business_logic/utils/services/image_picker/pick_image.dart';
+import 'package:instagram_clone/business_logic/utils/services/upload_image_service/upload_image_service.dart';
 import 'package:instagram_clone/business_logic/utils/strings/strings.dart';
 import 'package:instagram_clone/business_logic/view_models/base_model/base_model.dart';
 import 'package:logger/logger.dart';
@@ -26,7 +28,10 @@ class SignUpViewModel extends BaseModel {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   final FirebaseFirestore _cloudFirestore = FirebaseFirestore.instance;
+
+  /// User profile picture
   Uint8List? image;
+
   final Logger logger = Logger();
 
   Future<SignUpState> signUpUserUsingFirebase({
@@ -35,28 +40,23 @@ class SignUpViewModel extends BaseModel {
     required String username,
     required String bio,
   }) async {
-    if (email.isNotEmpty ||
-        password.isNotEmpty ||
-        username.isNotEmpty ||
-        bio.isNotEmpty) {
+    if (isValidated() == SignUpState.VALIDATED_TRUE) {
       try {
         UserCredential userCredential = await _firebaseAuth
             .createUserWithEmailAndPassword(email: email, password: password);
 
-        String photoUrl =
-            await uploadImageToStorage(DbKeys.usersProfilePics, image!, false);
+        String photoUrl = await uploadImageToStorage(DbKeys.usersProfilePics,
+            image!, false, _firebaseStorage, _firebaseAuth);
 
         UserModel userModel = UserModel(
             bio: bio,
-            email: email,
+            email: email.trim(),
             photoUrl: photoUrl,
             uid: userCredential.user!.uid,
             followers: [],
             following: [],
-            username: username);
-
-        serviceLocator.registerSingleton(userModel,
-            instanceName: Strings.userModel);
+            username: username.trim(),
+            deviceToken: FirebaseMethods.token!);
 
         _cloudFirestore
             .collection(DbKeys.userCollections)
@@ -80,7 +80,7 @@ class SignUpViewModel extends BaseModel {
       }
     }
 
-    return SignUpState.UNKNOWN_ERROR;
+    return isValidated();
   }
 
   void logOut() async {
@@ -91,24 +91,6 @@ class SignUpViewModel extends BaseModel {
   }
 
   /// Upload Image to Firebase Storage
-  Future<String> uploadImageToStorage(
-      String childName, Uint8List file, bool isPost) async {
-    Reference ref = _firebaseStorage
-        .ref()
-        .child(childName)
-        .child(_firebaseAuth.currentUser!.uid);
-
-    if (isPost) {
-      String id = const Uuid().v1();
-      ref = ref.child(id);
-    }
-
-    UploadTask uploadTask = ref.putData(file);
-
-    TaskSnapshot snapshot = await uploadTask;
-    String downloadUrl = await snapshot.ref.getDownloadURL();
-    return downloadUrl;
-  }
 
   /// Pick Image Using image picker plugin
   selectImage() async {
@@ -116,5 +98,37 @@ class SignUpViewModel extends BaseModel {
     notifyListeners();
   }
 
- 
+  /// Clear All Filled Information
+
+  resetUserSignUpInfo() {
+    image = null;
+    emailController.clear();
+    passwordConfirmController.clear();
+    bioController.clear();
+    passwordController.clear();
+    userNameController.clear();
+    notifyListeners();
+  }
+
+  /// Validations on sign up page
+
+  SignUpState isValidated() {
+    if (image == null) {
+      return SignUpState.SELECT_IMAGE;
+    }
+
+    if (emailController.text.isEmpty ||
+        passwordController.text.isEmpty ||
+        passwordConfirmController.text.isEmpty ||
+        bioController.text.isEmpty ||
+        userNameController.text.isEmpty) {
+      return SignUpState.VALIDATED_FALSE;
+    }
+
+    if (passwordConfirmController.text.trim() !=
+        passwordController.text.trim()) {
+      return SignUpState.PASSWORD_NOT_SAME;
+    }
+    return SignUpState.VALIDATED_TRUE;
+  }
 }

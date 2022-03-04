@@ -1,27 +1,51 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:instagram_clone/business_logic/utils/constants/constants.dart';
 import 'package:instagram_clone/business_logic/utils/enums/enums.dart';
+import 'package:instagram_clone/business_logic/utils/service_locator/service_locator.dart';
+import 'package:instagram_clone/business_logic/utils/services/database/database_keys/data_base_keys.dart';
+import 'package:instagram_clone/business_logic/utils/services/database/database_service/database_service.dart';
+import 'package:instagram_clone/business_logic/utils/strings/strings.dart';
 import 'package:instagram_clone/business_logic/view_models/base_model/base_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginViewModel extends BaseModel {
-  TextEditingController loginTextEditingController = TextEditingController();
+  TextEditingController loginEmailEditingController = TextEditingController();
   TextEditingController loginPasswordEditingController =
       TextEditingController();
 
-  signInWithEmailAndPassword({required String email, required password}) async {
+  Future<SignInState> signInWithEmailAndPassword(
+      {required String email, required password}) async {
+    log(email);
+    log(password);
     try {
-      setViewState(ViewState.Busy);
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-
-      setViewState(ViewState.Ideal);
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-        
+      log(e.code);
+      if (e.code == Constants.userNotFound) {
+        return SignInState.USER_NOT_FOUND;
+      } else if (e.code == Constants.wrongPassword) {
+        return SignInState.WRONG_PASSWORD;
+      } else if (e.code == Constants.invalidEmail) {
+        return SignInState.INVALID_EMAIL;
+      } else {
+        log(e.code);
+        return SignInState.UNKNOWN_ERROR;
       }
     }
+
+    return SignInState.SIGN_IN_SUCCESS;
+  }
+
+  clearLoginInfo() {
+    loginEmailEditingController.clear();
+    loginPasswordEditingController.clear();
+  }
+
+  setUserLoggedIn() {
+    StorageService().saveToDisk(DbKeys.isUserLoggedIn, true);
   }
 }

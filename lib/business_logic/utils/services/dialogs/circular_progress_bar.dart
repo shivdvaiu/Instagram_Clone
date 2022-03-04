@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-showCustomDialog({required BuildContext context}) {
+showCircularProgressBar({required BuildContext context}) {
   return showDialog(
       barrierColor: Colors.transparent,
       context: context,

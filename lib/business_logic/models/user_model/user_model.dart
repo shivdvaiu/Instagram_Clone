@@ -10,10 +10,12 @@ class UserModel {
   final String bio;
   final List followers;
   final List following;
+  final String deviceToken;
 
  UserModel(
       {required this.username,
       required this.uid,
+   required this.deviceToken, 
       required this.photoUrl,
       required this.email,
       required this.bio,
@@ -31,6 +33,7 @@ class UserModel {
       bio: snapshot["bio"],
       followers: snapshot["followers"],
       following: snapshot["following"],
+      deviceToken: snapshot["deviceToken"]
     );
   }
 
@@ -42,5 +45,6 @@ class UserModel {
         "bio": bio,
         "followers": followers,
         "following": following,
+        "deviceToken":deviceToken
       };
 }

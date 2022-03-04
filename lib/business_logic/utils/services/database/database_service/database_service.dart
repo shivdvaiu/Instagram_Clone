@@ -3,13 +3,12 @@ import 'package:instagram_clone/business_logic/utils/strings/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:logger/logger.dart';
 
-class StorageServiceImpl {
-  final  Logger _log = serviceLocator.get(instanceName: Strings.logger);
+class StorageService {
+  final Logger _log = serviceLocator.get<Logger>();
 
-  SharedPreferences _preferences =
-      serviceLocator.get(instanceName: Strings.sharedPreferences);
+  SharedPreferences _preferences = serviceLocator.get<SharedPreferences>();
 
-  dynamic _getFromDisk(String key) {
+  dynamic getFromDisk(String key) {
     final value = _preferences.get(key);
 
     _log.log(
@@ -18,7 +17,7 @@ class StorageServiceImpl {
     return value;
   }
 
-  void _saveToDisk<T>(String key, T content) {
+  saveToDisk<T>(String key, T content) {
     _log.log(
         Level.debug, 'LocalStorageService: (Saving) key: $key value: $content');
 
@@ -37,5 +36,9 @@ class StorageServiceImpl {
     if (content is List<String>) {
       _preferences.setStringList(key, content);
     }
+  }
+
+  clearStorage() {
+    _preferences.clear();
   }
 }

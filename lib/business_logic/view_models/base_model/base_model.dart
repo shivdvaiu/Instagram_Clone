@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/business_logic/models/user_model/user_model.dart';
 import 'package:instagram_clone/business_logic/utils/enums/enums.dart';
 
+class BaseModel extends ChangeNotifier {
 
-
-class BaseModel extends ChangeNotifier { 
-  
   ViewState _viewState = ViewState.Ideal;
 
   ViewState get viewState => _viewState;
@@ -14,7 +13,7 @@ class BaseModel extends ChangeNotifier {
     notifyListeners();
   }
 
-   AuthState _authState = AuthState.SignIn;
+  AuthState _authState = AuthState.SignIn;
 
   AuthState get authState => _authState;
 
@@ -25,4 +24,3 @@ class BaseModel extends ChangeNotifier {
 
 
 }
-

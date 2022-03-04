@@ -19,7 +19,7 @@ class AppTheme {
         onSecondary: Colors.white,
         onPrimary: Colors.black,
         onSurface: Colors.white,
-        surface: Colors.white,
+        surface: Color.fromRGBO(0, 149, 246, 1),
       ),
 
       ///text theme
@@ -34,6 +34,7 @@ class AppTheme {
       ));
 
   static final ThemeData darkTheme = ThemeData.dark().copyWith(
+    primaryColorDark: Colors.white,
       colorScheme: ColorScheme(
         primary: Colors.white,
         primaryVariant: Color(0xff191919),
