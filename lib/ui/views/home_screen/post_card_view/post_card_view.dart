@@ -8,6 +8,8 @@ import 'package:instagram_clone/business_logic/utils/routes/routes.dart';
 import 'package:instagram_clone/business_logic/utils/service_locator/service_locator.dart';
 import 'package:instagram_clone/business_logic/utils/services/database/database_keys/data_base_keys.dart';
 import 'package:instagram_clone/business_logic/utils/services/extensions/calculate_time_ago.dart';
+import 'package:instagram_clone/business_logic/utils/services/firebase/firebase_methods.dart';
+import 'package:instagram_clone/business_logic/utils/services/push_notifications/firebase_notification.dart';
 import 'package:instagram_clone/business_logic/utils/services/snack_bar/snack_bar.dart';
 import 'package:instagram_clone/business_logic/utils/strings/strings.dart';
 import 'package:instagram_clone/business_logic/view_models/home_view_model/home_view_model.dart';
@@ -45,7 +47,10 @@ class PostCard extends StatelessWidget {
               ).copyWith(right: 0),
               child: Row(
                 children: <Widget>[
-                  CachedImage(userPost.currentUserProfilePicture,radius: 40,),
+                  CachedImage(
+                    userPost.currentUserProfilePicture,
+                    radius: 40,
+                  ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(
@@ -65,47 +70,50 @@ class PostCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // widget.snap['uid'].toString() == user.uid
-                  //     ? IconButton(
-                  //         onPressed: () {
-                  //           showDialog(
-                  //             useRootNavigator: false,
-                  //             context: context,
-                  //             builder: (context) {
-                  //               return Dialog(
-                  //                 child: ListView(
-                  //                     padding: const EdgeInsets.symmetric(
-                  //                         vertical: 16),
-                  //                     shrinkWrap: true,
-                  //                     children: [
-                  //                       'Delete',
-                  //                     ]
-                  //                         .map(
-                  //                           (e) => InkWell(
-                  //                               child: Container(
-                  //                                 padding:
-                  //                                     const EdgeInsets.symmetric(
-                  //                                         vertical: 12,
-                  //                                         horizontal: 16),
-                  //                                 child: Text(e),
-                  //                               ),
-                  //                               onTap: () {
-                  //                                 deletePost(
-                  //                                   widget.snap['postId']
-                  //                                       .toString(),
-                  //                                 );
-                  //                                 // remove the dialog box
-                  //                                 Navigator.of(context).pop();
-                  //                               }),
-                  //                         )
-                  //                         .toList()),
-                  //               );
-                  //             },
-                  //           );
-                  //         },
-                  //         icon: const Icon(Icons.more_vert),
-                  //       )
-                  //     : Container(),
+                  context.read<HomeViewModel>().firebaseUser != null
+                      ? userPost.uid ==
+                              context.read<HomeViewModel>().firebaseUser!.uid
+                          ? IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  useRootNavigator: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      child: ListView(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 16),
+                                          shrinkWrap: true,
+                                          children: [
+                                            'Delete',
+                                          ]
+                                              .map(
+                                                (e) => InkWell(
+                                                    child: Container(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 12,
+                                                          horizontal: 16),
+                                                      child: Text(e),
+                                                    ),
+                                                    onTap: () {
+                                                      postCardProvider
+                                                          .deletePost(
+                                                              userPost.postId);
+
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    }),
+                                              )
+                                              .toList()),
+                                    );
+                                  },
+                                );
+                              },
+                              icon: const Icon(Icons.more_vert),
+                            )
+                          : Container()
+                      : Container(),
                 ],
               ),
             ),
@@ -135,13 +143,11 @@ class PostCard extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   CachedImage(
-                  
-                     userPost.postUrl,
+                    userPost.postUrl,
                     isRound: false,
                     height: 40.h,
-                  radius: 0,
+                    radius: 0,
                     width: double.infinity,
-            
                   ),
                   AnimatedOpacity(
                     duration: const Duration(milliseconds: 200),
@@ -195,6 +201,8 @@ class PostCard extends StatelessWidget {
                             break;
 
                           case LikePostState.POST_LIKED:
+
+                             sendMessageUsingFcm(fcmToken: FirebaseMethods.fcmToken!, message: "Liked Message", title: 'Liked');
                             postCardProvider.setAnimation = true;
                             break;
                         }
@@ -207,8 +215,8 @@ class PostCard extends StatelessWidget {
                     Icons.comment_outlined,
                   ),
                   onPressed: () {
-                     Navigator.pushNamed(context, Routes.commentsScreen,
-                                arguments: [userPost]);
+                    Navigator.pushNamed(context, Routes.commentsScreen,
+                        arguments: [userPost]);
                   },
                 ),
                 IconButton(
