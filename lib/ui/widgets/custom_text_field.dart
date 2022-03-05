@@ -8,11 +8,13 @@ class CustomTextField extends StatelessWidget {
   final bool isObsecure;
   final String hintText;
   final TextInputType textInputType;
+  final bool isPostCommentScreen;
   const CustomTextField({
     Key? key,
     required this.textEditingController,
     this.isObsecure = false,
     required this.hintText,
+    this.isPostCommentScreen=false,
     required this.textInputType,
   }) : super(key: key);
 
@@ -27,7 +29,7 @@ class CustomTextField extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.secondaryVariant,
-            borderRadius: BorderRadius.circular(2)),
+            borderRadius:isPostCommentScreen==false?  BorderRadius.circular(2): BorderRadius.circular(22)),
         child: TextField(
           onChanged: (value) {},
           style:

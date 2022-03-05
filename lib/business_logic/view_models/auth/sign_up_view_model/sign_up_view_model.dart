@@ -56,7 +56,7 @@ class SignUpViewModel extends BaseModel {
             followers: [],
             following: [],
             username: username.trim(),
-            deviceToken: FirebaseMethods.token!);
+            deviceToken: FirebaseMethods.fcmToken!);
 
         _cloudFirestore
             .collection(DbKeys.userCollections)

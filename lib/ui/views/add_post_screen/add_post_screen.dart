@@ -59,7 +59,7 @@ class AddPostScreen extends StatelessWidget {
                               addPostProvider.captionEditingController.text
                                   .trim(),
                               addPostProvider.postImageFile!,
-                              Uuid().v1(),
+                              context.read<HomeViewModel>().firebaseUser!.uid,
                               context
                                   .read<HomeViewModel>()
                                   .firebaseUser!
@@ -69,12 +69,14 @@ class AddPostScreen extends StatelessWidget {
                                   .firebaseUser!
                                   .photoUrl)
                           .then((postState) {
-                            Navigator.pop(context);
-                            
+                        Navigator.pop(context);
+                        Future.delayed(Duration(microseconds: 300));
+
                         switch (postState) {
                           case UploadPostState.POST_UPLOADED:
-                          addPostProvider.clearPostInformation();
+                            addPostProvider.clearPostInformation();
                             showSnackBar(context, Strings.postUploaded);
+                            context.read<HomeViewModel>().changePage = 0;
                             break;
 
                           case UploadPostState.UNKNOWN_ERROR:

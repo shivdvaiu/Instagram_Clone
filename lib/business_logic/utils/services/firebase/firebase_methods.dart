@@ -16,13 +16,16 @@ class FirebaseMethods extends ChangeNotifier {
   final FirebaseAuth firebaseAuth = serviceLocator.get<FirebaseAuth>();
   final FirebaseMessaging firebaseMessaging =
       serviceLocator.get<FirebaseMessaging>();
- 
-  static String? token;
- getFirebaseDeviceToken() async {
-    token = await FirebaseMessaging.instance.getToken();
 
-    log(" fcm token is $token");
+  /// Firebase cloud messaging device token
+  static String? fcmToken;
+  getFirebaseDeviceToken() async {
+
+    fcmToken = await FirebaseMessaging.instance.getToken();
+    notifyListeners();
+    log("fcm token is $fcmToken");
   }
 
 
+  
 }

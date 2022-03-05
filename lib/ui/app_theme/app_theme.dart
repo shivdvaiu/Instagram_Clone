@@ -20,6 +20,7 @@ class AppTheme {
         onPrimary: Colors.black,
         onSurface: Colors.white,
         surface: Color.fromRGBO(0, 149, 246, 1),
+        
       ),
 
       ///text theme
@@ -49,6 +50,7 @@ class AppTheme {
         onPrimary: Colors.white,
         onSurface: Colors.white,
         surface: Colors.white,
+
       ),
 
       ///text theme

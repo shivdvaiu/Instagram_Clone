@@ -41,6 +41,11 @@ class Strings {
 
 
 
+/// Comments screen
+
+static const String writeYourComment = "Write your comment";
+
+
 
   // In Add Post Screen
 

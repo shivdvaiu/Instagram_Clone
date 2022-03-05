@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone/business_logic/models/user_post/user_post_model.dart';
 import 'package:instagram_clone/business_logic/utils/enums/enums.dart';
 import 'package:instagram_clone/business_logic/utils/services/database/database_keys/data_base_keys.dart';
+import 'package:instagram_clone/business_logic/utils/services/firebase/firebase_methods.dart';
 import 'package:instagram_clone/business_logic/utils/services/upload_image_service/upload_image_service.dart';
 import 'package:uuid/uuid.dart';
 
@@ -21,9 +22,6 @@ class AddPostViewModel extends ChangeNotifier {
 
   Future<UploadPostState> uploadPost(String description, Uint8List file,
       String uid, String username, String profImage) async {
-    
-
-
     try {
       String postImageUrl = await uploadImageToStorage(DbKeys.userPosts,
           postImageFile!, true, _firebaseStorage, _firebaseAuth);
@@ -38,14 +36,13 @@ class AddPostViewModel extends ChangeNotifier {
         datePublished: DateTime.now(),
         postUrl: postImageUrl,
         currentUserProfilePicture: profImage,
+        userFcmDeviceToken: FirebaseMethods.fcmToken ?? "",
       );
 
       _cloudFirestore
           .collection(DbKeys.userPosts)
           .doc(postId)
           .set(post.toJson());
-
-
     } catch (err) {
       return UploadPostState.UNKNOWN_ERROR;
     }

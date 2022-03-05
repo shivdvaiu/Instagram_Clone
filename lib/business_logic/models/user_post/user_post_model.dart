@@ -6,9 +6,10 @@ class Post {
   final String username;
   final dynamic likes;
   final String postId;
-  final DateTime datePublished;
+  final dynamic datePublished;
   final String postUrl;
   final String currentUserProfilePicture;
+  final String userFcmDeviceToken;
 
   const Post(
       {required this.description,
@@ -18,6 +19,7 @@ class Post {
       required this.postId,
       required this.datePublished,
       required this.postUrl,
+      required this.userFcmDeviceToken,
       required this.currentUserProfilePicture,
       });
 
@@ -32,7 +34,8 @@ class Post {
       datePublished: snapshot["datePublished"],
       username: snapshot["username"],
       postUrl: snapshot['postUrl'],
-      currentUserProfilePicture: snapshot['profImage']
+      currentUserProfilePicture: snapshot['currentUserProfile'],
+      userFcmDeviceToken:snapshot['fcmToken']
     );
   }
 
@@ -44,6 +47,7 @@ class Post {
         "postId": postId,
         "datePublished": datePublished,
         'postUrl': postUrl,
-        'currentUserProfile':currentUserProfilePicture
+        'currentUserProfile':currentUserProfilePicture,
+      'fcmToken':userFcmDeviceToken
       };
 }
