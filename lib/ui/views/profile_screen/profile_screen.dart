@@ -58,28 +58,7 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    trailing: CupertinoSwitch(
-                      value: context.read<ThemeViewModel>().isLightMode,
-                      onChanged: (value) {
-                        context.read<ThemeViewModel>().changeTheme();
-                      },
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    tileColor: Theme.of(context).colorScheme.secondaryVariant,
-                    leading: Text(
-                      "Change Theme",
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                            color: Theme.of(context).colorScheme.surface,
-                            fontSize: 11.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                  ),
-                )
+                
               ],
             ),
           ),

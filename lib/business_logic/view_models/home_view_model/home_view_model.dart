@@ -45,7 +45,7 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   List<Widget> allScreens = [
-    HomeScreenBody(),
+   HomeView(),
     SearchScreen(),
     AddPostScreen(),
     FavouritesScreen(),

@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/business_logic/utils/assets/assets.dart';
 import 'package:instagram_clone/business_logic/utils/enums/enums.dart';
@@ -22,7 +25,7 @@ class LoginScreen extends StatelessWidget {
     return Consumer<LoginViewModel>(
       builder: (BuildContext context, loginProvider, Widget? child) {
         return Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Colors.white,
           body: SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -33,8 +36,8 @@ class LoginScreen extends StatelessWidget {
                     height: 20.h,
                   ),
                   SvgPicture.asset(
-                    Assets.instaLogo,
-                    color: Theme.of(context).colorScheme.onPrimary,
+                    AssetsPath.instaLogo,
+                    color: Colors.black,
                   ),
                   SizedBox(
                     height: 4.h,
@@ -125,16 +128,92 @@ class LoginScreen extends StatelessWidget {
                             Navigator.pushNamed(context, Routes.signupScreen);
                           },
                         text: Strings.signupText,
-                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                            fontSize: 12.sp,
-                            color: Theme.of(context).colorScheme.secondary))
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(fontSize: 12.sp, color: Colors.black)),
                   ])),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            showCircularProgressBar(context: context);
+
+                            loginProvider.signInWithGoogle().then((value) {
+                              Navigator.pop(context);
+                              if (loginProvider.hasError == false) {
+                                Navigator.popAndPushNamed(
+                                    context, Routes.baseView);
+                              } else if (loginProvider.hasError) {
+                                showSnackBar(
+                                    context, loginProvider.errorCode ?? "");
+                              }
+                            });
+                          },
+                          child: _roundedButton(AssetsPath.google)),
+                      GestureDetector(
+                          onTap: () {
+                            showCircularProgressBar(context: context);
+
+                            loginProvider.signInWithApple().then((value) {
+                              Navigator.pop(context);
+                              if (loginProvider.hasError == false) {
+                                Navigator.popAndPushNamed(
+                                    context, Routes.baseView);
+                              } else if (loginProvider.hasError) {
+                                showSnackBar(
+                                    context, loginProvider.errorCode ?? "");
+                              }
+                            });
+                          },
+                          child: _roundedButton(AssetsPath.apple)),
+                      GestureDetector(
+                          onTap: () async {
+                            showCircularProgressBar(context: context);
+
+                            loginProvider.signInwithFacebook().then((value) {
+                              Navigator.pop(context);
+                              if (loginProvider.hasError == false) {
+                                Navigator.popAndPushNamed(
+                                    context, Routes.baseView);
+                              } else if (loginProvider.hasError) {
+                                showSnackBar(
+                                    context, loginProvider.errorCode ?? "");
+                              }
+                            });
+                          },
+                          child: _roundedButton(AssetsPath.facebook))
+                    ],
+                  )
                 ],
               ),
             ),
           ),
         );
       },
+    );
+  }
+
+  Container _roundedButton(String path) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Color(0xffeaefff),
+          width: 1,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Image.asset(
+          path,
+          height: 30,
+        ),
+      ),
     );
   }
 }

@@ -28,7 +28,7 @@ class CustomTextField extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10),
       child: Container(
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondaryVariant,
+            color: Colors.grey.withOpacity(0.2),
             borderRadius:isPostCommentScreen==false?  BorderRadius.circular(2): BorderRadius.circular(22)),
         child: TextField(
           onChanged: (value) {},
@@ -39,7 +39,7 @@ class CustomTextField extends StatelessWidget {
             hintStyle: Theme.of(context)
                 .textTheme
                 .bodyText1!
-                .copyWith(fontSize: 10.sp),
+                .copyWith(fontSize: 10.sp,color: Colors.black),
             hintText: hintText,
             border: inputBorder,
             focusedBorder: inputBorder,

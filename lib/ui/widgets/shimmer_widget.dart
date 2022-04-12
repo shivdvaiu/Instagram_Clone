@@ -56,22 +56,17 @@ class _CachedImageState extends State<CachedImage>
   final defaultShimmerBackColor = Colors.black.withOpacity(0.70);
 
   void _buildLoader() {
-    shimmerLoader = Consumer<ThemeViewModel>(
-        builder: (context, themeProvider, child) => ImageShimmerWidget(
+    shimmerLoader = ImageShimmerWidget(
               width: widget.width,
               height: widget.height,
               shimmerDirection: ShimmerDirection.ltr,
               shimmerDuration: const Duration(milliseconds: 1000),
-              baseColor: themeProvider.isLightMode == false
-                  ? defaultShimmerBaseColor
-                  : Colors.black.withOpacity(0.35),
-              highlightColor: themeProvider.isLightMode == false
-                  ? defaultShimmerHighlightColor
-                  : Colors.white10,
-              backColor: themeProvider.isLightMode == false
-                  ? defaultShimmerBackColor
-                  : Colors.white,
-            ));
+              baseColor:  Colors.black.withOpacity(0.35),
+              highlightColor: 
+                Colors.white10,
+              backColor: 
+                 Colors.white,
+            );
     errorWidget = Container(
       height: widget.isRound ? widget.radius : widget.height,
       width: widget.isRound ? widget.radius : widget.width,

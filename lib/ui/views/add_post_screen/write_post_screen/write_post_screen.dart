@@ -43,7 +43,7 @@ class WritePostScreen extends StatelessWidget {
             child: Text(
               "Post",
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    color: Theme.of(context).colorScheme.surface,
+                    color: Colors.black,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                   ),

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<resources>  
+
+   <string name="app_name">instagram_clone</string> 
+<string name="facebook_app_id">670535207573343</string><!--Your App Name on Fb -->
+  <string name="fb_login_protocol_scheme">670535207573343</string> 
+  <string name="facebook_client_token">35207</string> <!-- fb app id-->
+     <!-- fb + app id-->
+</resources>

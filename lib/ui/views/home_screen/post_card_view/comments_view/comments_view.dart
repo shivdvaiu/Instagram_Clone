@@ -77,7 +77,7 @@ class CommentsScreen extends StatelessWidget {
                               .textTheme
                               .bodyText1!
                               .copyWith(
-                                color: Theme.of(context).colorScheme.surface,
+                                color: Colors.black,
                                 fontSize: 10.sp,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -94,7 +94,7 @@ class CommentsScreen extends StatelessWidget {
                                 .textTheme
                                 .bodyText1!
                                 .copyWith(
-                                  color: Theme.of(context).colorScheme.surface,
+                                  color: Colors.black,
                                   fontSize: 10.sp,
                                 ),
                           ),
@@ -111,7 +111,7 @@ class CommentsScreen extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1!
-                            .copyWith(fontSize: 8.sp),
+                            .copyWith(fontSize: 8.sp,color: Colors.black),
                       ),
                       padding:
                           EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -157,9 +157,7 @@ class CommentsScreen extends StatelessWidget {
                                               .textTheme
                                               .bodyText1!
                                               .copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .surface,
+                                                  color: Colors.black,
                                                   fontSize: 7.sp)),
                                     ],
                                   ),
@@ -174,7 +172,7 @@ class CommentsScreen extends StatelessWidget {
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1!
-                                        .copyWith(fontSize: 8.sp),
+                                        .copyWith(fontSize: 8.sp, color: Colors.black,),
                                   )
                                 ],
                               ),
@@ -191,9 +189,10 @@ class CommentsScreen extends StatelessWidget {
                   title: Text(
                     "Comments",
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          color: Theme.of(context).colorScheme.surface,
+                          color: Colors.black,
                           fontSize: 13.sp,
                           fontWeight: FontWeight.bold,
+                          
                         ),
                   ),
                   backgroundColor: Theme.of(context).colorScheme.background,
@@ -272,9 +271,10 @@ class CommentsScreen extends StatelessWidget {
                     child: Text(
                       "Post",
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                            color: Theme.of(context).colorScheme.surface,
+                          color: Colors.black,
                             fontSize: 10.sp,
                             fontWeight: FontWeight.bold,
+
                           ),
                     )),
                 SizedBox(

@@ -25,7 +25,7 @@ class SignUpScreen extends StatelessWidget {
     return Consumer<SignUpViewModel>(
       builder: (BuildContext context, signUpProvider, Widget? child) {
         return Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Colors.white,
           body: SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -36,8 +36,8 @@ class SignUpScreen extends StatelessWidget {
                     height: 8.h,
                   ),
                   SvgPicture.asset(
-                    Assets.instaLogo,
-                    color: Theme.of(context).colorScheme.onPrimary,
+                    AssetsPath.instaLogo,
+                    color: Colors.black,
                   ),
                   SizedBox(
                     height: 1.h,
@@ -152,6 +152,9 @@ class SignUpScreen extends StatelessWidget {
                             fontSize: 12.sp,
                             color: Theme.of(context).colorScheme.secondary))
                   ])),
+                   SizedBox(
+                    height: 8.h,
+                  ),
                 ],
               ),
             ),

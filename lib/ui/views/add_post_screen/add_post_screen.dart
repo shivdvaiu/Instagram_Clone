@@ -5,8 +5,10 @@ import 'package:instagram_clone/business_logic/utils/services/dialogs/select_ima
 import 'package:instagram_clone/business_logic/utils/services/snack_bar/snack_bar.dart';
 import 'package:instagram_clone/business_logic/utils/strings/strings.dart';
 import 'package:instagram_clone/business_logic/view_models/add_post_view_model/add_post_view_model.dart';
+import 'package:instagram_clone/business_logic/view_models/base_view_model/base_view_model.dart';
 import 'package:instagram_clone/business_logic/view_models/home_view_model/home_view_model.dart';
 import 'package:instagram_clone/ui/views/add_post_screen/write_post_screen/write_post_screen.dart';
+import 'package:instagram_clone/ui/views/base_view/base_view.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:uuid/uuid.dart';
@@ -20,6 +22,7 @@ class AddPostScreen extends StatelessWidget {
         builder: (BuildContext context, addPostProvider, Widget? child) =>
             addPostProvider.postImageFile == null
                 ? Scaffold(
+                  appBar: AppBar(backgroundColor: Colors.white),
                     backgroundColor: Theme.of(context).colorScheme.background,
                     body: Center(
                       child: Container(
@@ -77,6 +80,10 @@ class AddPostScreen extends StatelessWidget {
                             addPostProvider.clearPostInformation();
                             showSnackBar(context, Strings.postUploaded);
                             context.read<HomeViewModel>().changePage = 0;
+                            Future.delayed(Duration(seconds: 2),(){
+                              Navigator.pop(context);
+                              context.read<BaseViewModel>().setCurrentBottomNavIndex = 0;
+                            });
                             break;
 
                           case UploadPostState.UNKNOWN_ERROR:
